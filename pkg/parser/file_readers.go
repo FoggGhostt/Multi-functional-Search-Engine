@@ -8,18 +8,21 @@ import (
 	"sync"
 )
 
-const Block_size = 2 << (10 + 10) //  пока не очень понимаю, как его формировать
+const BLOCK_SIZE = 2 << (10) //  пока не очень понимаю, как его формировать
+const UTF8_START_BYTE = 0x80
+const MIDDLE_UTF8_BYTE_SIZE = 6
+const START_OF_MIDDLE_UTF8_BYTE = 0b10
+const ERROR_CHANEL_SIZE = 100
 
 func searchFile(filePath string) (bool, error) {
-	if _, err := os.Stat(filePath); err == nil {
-		return true, nil
-	} else {
+	if _, err := os.Stat(filePath); err != nil {
 		return false, err
 	}
+	return true, nil
 }
 
 func count_1_in_begining(b byte) int {
-	if b&0x80 == 0 {
+	if b&UTF8_START_BYTE == 0 {
 		return 1
 	}
 	result := 0
@@ -32,25 +35,29 @@ func count_1_in_begining(b byte) int {
 }
 
 func is_start_byte(b byte) bool {
-	return b>>6 != 0b10
+	return b>>MIDDLE_UTF8_BYTE_SIZE != START_OF_MIDDLE_UTF8_BYTE
 }
 
 func Parse_txt_File(filePath string) (*sync.Map, error) {
 	does_exists, err := searchFile(filePath)
-	if err != nil || !does_exists {
-		return nil, fmt.Errorf("error: file %s didn't found", filePath)
+	if err != nil {
+		return nil, fmt.Errorf("error while file searching")
+	}
+	if !does_exists {
+		return nil, fmt.Errorf("file %s didn't found", filePath)
 	}
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, errors.New("error while file opening")
+		return nil, fmt.Errorf("error while file opening")
 	}
+	buffer := make([]byte, BLOCK_SIZE)
+	var sync_map sync.Map
+	var wg sync.WaitGroup
+	errCh := make(chan error, ERROR_CHANEL_SIZE)
+	undecoded_tail_len := 0
 	defer file.Close()
 	// buf_reader := bufio.NewReader(file)  оно не работает,
 	// seek некорректно сдвигает его границу (даже когда делаю это для файла а потом создаю новый ридер)
-	buffer := make([]byte, Block_size)
-	var sync_map sync.Map
-	var wg sync.WaitGroup
-	undecoded_tail_len := 0
 	for {
 		// byte_read_count, err := buf_reader.Read(buffer)
 		byte_read_count, err := file.Read(buffer)
@@ -58,8 +65,7 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 			break
 		}
 		if err != nil {
-			fmt.Println("err")
-			return nil, errors.New("error while file reading")
+			return nil, fmt.Errorf("error while file reading")
 		}
 		for i := 0; i < byte_read_count; i++ {
 			if is_start_byte(buffer[byte_read_count-i-1]) {
@@ -71,7 +77,7 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 			if _, err := file.Seek(-int64(undecoded_tail_len), io.SeekCurrent); err == nil {
 				// buf_reader = bufio.NewReader(file)
 			} else {
-				return nil, errors.New("error while file reading")
+				return nil, fmt.Errorf("error while file reading")
 			}
 		} else {
 			undecoded_tail_len = 0
@@ -80,9 +86,17 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 		wg.Add(1)
 		go func(data string) {
 			defer wg.Done()
-			Tokenize(data, &sync_map)
+			err := Tokenize(data, &sync_map)
+			if err != nil {
+				errCh <- err
+			}
 		}(dataCopy)
 	}
 	wg.Wait()
-	return &sync_map, nil
+	select {
+	case err := <-errCh:
+		return nil, err
+	default:
+		return &sync_map, nil
+	}
 }

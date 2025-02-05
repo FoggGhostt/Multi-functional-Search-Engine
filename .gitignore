@@ -5,3 +5,5 @@
 *.log
 *.gz
 *.toc
+output.txt
+build
