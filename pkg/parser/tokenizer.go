@@ -15,6 +15,9 @@ func Tokenize(text string, sync_map *sync.Map) error {
 	text = strings.ToLower(text)
 	words := strings.FieldsFunc(text, splitFunc)
 	for _, word := range words {
+		if StopWordsHandle.IsStopWord(word) {
+			continue
+		}
 		value, is_inside := sync_map.Load(word)
 		if is_inside {
 			intValue, isCorrectType := value.(int64)
