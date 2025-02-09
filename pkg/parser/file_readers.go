@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"sync"
+	// "github.com/dslipak/pdf"
 )
 
 const BLOCK_SIZE = 2 << (10 + 10) //  пока не очень понимаю, как его формировать
@@ -39,6 +40,13 @@ func is_start_byte(b byte) bool {
 }
 
 func Parse_txt_File(filePath string) (*sync.Map, error) {
+	var sync_map sync.Map
+	var wg sync.WaitGroup
+
+	buffer := make([]byte, BLOCK_SIZE)
+	errCh := make(chan error, ERROR_CHANEL_SIZE)
+	undecoded_tail_len := 0
+
 	does_exists, err := searchFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("error while file searching")
@@ -50,11 +58,6 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error while file opening")
 	}
-	buffer := make([]byte, BLOCK_SIZE)
-	var sync_map sync.Map
-	var wg sync.WaitGroup
-	errCh := make(chan error, ERROR_CHANEL_SIZE)
-	undecoded_tail_len := 0
 	defer file.Close()
 	// buf_reader := bufio.NewReader(file)  оно не работает,
 	// seek некорректно сдвигает его границу (даже когда делаю это для файла а потом создаю новый ридер)
@@ -100,3 +103,47 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 		return &sync_map, nil
 	}
 }
+
+// func readPdf(path string) (string, error) {
+// 	r, err := pdf.Open(path)
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	var buf bytes.Buffer
+// 	b, err := r.GetPlainText()
+// 	if err != nil {
+// 		return "", err
+// 	}
+// 	buf.ReadFrom(b)
+// 	return buf.String(), nil
+// }
+
+// func Parse_pdf_file(filePath string) (*sync.Map, error) {
+// 	var sync_map sync.Map
+// 	var wg sync.WaitGroup
+// 	errCh := make(chan error, ERROR_CHANEL_SIZE)
+
+// 	content, err := readPdf(filePath)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	fmt.Println(content)
+
+// 	wg.Add(1)
+// 	go func(data string) {
+// 		defer wg.Done()
+// 		err := Tokenize(data, &sync_map)
+// 		if err != nil {
+// 			errCh <- err
+// 		}
+// 	}(content)
+
+// 	wg.Wait()
+// 	select {
+// 	case err := <-errCh:
+// 		return nil, err
+// 	default:
+// 		return &sync_map, nil
+// 	}
+// }

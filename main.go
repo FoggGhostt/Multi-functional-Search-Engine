@@ -21,9 +21,12 @@ func main() {
 	var filepath string
 	fmt.Scan(&filepath)
 	if res, err := parser.ParseFile(filepath); err == nil {
+		fmt.Println("okey")
 		res.Range(func(key, value any) bool {
 			fmt.Println(key, "-->", value)
 			return true
 		})
+	} else {
+		fmt.Println(err)
 	}
 }
