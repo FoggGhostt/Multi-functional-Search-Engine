@@ -14,14 +14,14 @@ type StopWordsHandleStruct struct {
 func (wordsHandle *StopWordsHandleStruct) InitializeWordMap(filePath string) error {
 	does_exists, err := searchFile(filePath)
 	if err != nil {
-		return fmt.Errorf("error while file searching")
+		return fmt.Errorf("no such file")
 	}
 	if !does_exists {
 		return fmt.Errorf("file %s didn't found", filePath)
 	}
 	file, err := os.Open(filePath)
 	if err != nil {
-		return fmt.Errorf("error while file opening")
+		return fmt.Errorf("cant open the file")
 	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

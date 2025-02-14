@@ -21,7 +21,7 @@ func ParseFile(file_path string) (*sync.Map, error) {
 	if mimeType == "text/plain" {
 		sync_map_ptr, err = Parse_txt_File(file_path)
 	} else if mimeType == "application/pdf" {
-		// sync_map_ptr, err = Parse_pdf_file(file_path)
+		sync_map_ptr, err = Parse_pdf_file(file_path)
 	}
 	return sync_map_ptr, err
 }

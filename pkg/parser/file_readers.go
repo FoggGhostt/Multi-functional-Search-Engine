@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
+	"path"
 	"sync"
 	// "github.com/dslipak/pdf"
 )
 
-const BLOCK_SIZE = 2 << (10 + 10) //  пока не очень понимаю, как его формировать
+const BLOCK_SIZE = 2 << (15) //  пока не очень понимаю, как его формировать
 const UTF8_START_BYTE = 0x80
 const MIDDLE_UTF8_BYTE_SIZE = 6
 const START_OF_MIDDLE_UTF8_BYTE = 0b10
@@ -49,14 +51,14 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 
 	does_exists, err := searchFile(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("error while file searching")
+		return nil, fmt.Errorf("there isnt such file")
 	}
 	if !does_exists {
 		return nil, fmt.Errorf("file %s didn't found", filePath)
 	}
 	file, err := os.Open(filePath)
 	if err != nil {
-		return nil, fmt.Errorf("error while file opening")
+		return nil, fmt.Errorf("cant open the file")
 	}
 	defer file.Close()
 	// buf_reader := bufio.NewReader(file)  оно не работает,
@@ -68,7 +70,7 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 			break
 		}
 		if err != nil {
-			return nil, fmt.Errorf("error while file reading")
+			return nil, fmt.Errorf("cant read the file")
 		}
 		for i := 0; i < byte_read_count; i++ {
 			if is_start_byte(buffer[byte_read_count-i-1]) {
@@ -80,7 +82,7 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 			if _, err := file.Seek(-int64(undecoded_tail_len), io.SeekCurrent); err == nil {
 				// buf_reader = bufio.NewReader(file)
 			} else {
-				return nil, fmt.Errorf("error while file reading")
+				return nil, fmt.Errorf("cant read the file")
 			}
 		} else {
 			undecoded_tail_len = 0
@@ -104,46 +106,14 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 	}
 }
 
-// func readPdf(path string) (string, error) {
-// 	r, err := pdf.Open(path)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	var buf bytes.Buffer
-// 	b, err := r.GetPlainText()
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	buf.ReadFrom(b)
-// 	return buf.String(), nil
-// }
+func Parse_pdf_file(filePath string) (*sync.Map, error) {
+	txtFileName := path.Base(filePath) + ".txt"
 
-// func Parse_pdf_file(filePath string) (*sync.Map, error) {
-// 	var sync_map sync.Map
-// 	var wg sync.WaitGroup
-// 	errCh := make(chan error, ERROR_CHANEL_SIZE)
+	cmd := exec.Command("pdftotext", "-enc", "UTF-8", filePath, txtFileName)
 
-// 	content, err := readPdf(filePath)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+	if err := cmd.Run(); err != nil {
+		return nil, fmt.Errorf("cant decode pdf file, pdftotext: %v", err)
+	}
 
-// 	fmt.Println(content)
-
-// 	wg.Add(1)
-// 	go func(data string) {
-// 		defer wg.Done()
-// 		err := Tokenize(data, &sync_map)
-// 		if err != nil {
-// 			errCh <- err
-// 		}
-// 	}(content)
-
-// 	wg.Wait()
-// 	select {
-// 	case err := <-errCh:
-// 		return nil, err
-// 	default:
-// 		return &sync_map, nil
-// 	}
-// }
+	return Parse_txt_File(txtFileName)
+}

@@ -10,6 +10,8 @@ import (
 	"github.com/kljensen/snowball"
 )
 
+var mtx sync.Mutex
+
 func stem(word string) (string, error) {
 	r, _ := utf8.DecodeRuneInString(word)
 	if unicode.Is(unicode.Latin, r) {
@@ -30,19 +32,33 @@ func Tokenize(text string, sync_map *sync.Map) error {
 		if StopWordsHandle.IsStopWord(word) || word == "" {
 			continue
 		}
-		value, is_inside := sync_map.Load(word)
 		stemmed_word, err := stem(word)
 		if err != nil {
 			return err
 		}
+		value, is_inside := sync_map.Load(stemmed_word)
 		if is_inside {
 			intValue, isCorrectType := value.(int64)
 			if !isCorrectType {
 				return fmt.Errorf("incorrect type in sync_map")
 			}
-			sync_map.Store(stemmed_word, intValue+1)
+			for !sync_map.CompareAndSwap(stemmed_word, intValue, intValue+1) {
+				value, _ = sync_map.Load(stemmed_word)
+				intValue, _ = value.(int64)
+			}
 		} else {
-			sync_map.Store(stemmed_word, int64(1))
+			mtx.Lock()
+			value, is_inside = sync_map.Load(stemmed_word)
+			intValue := 0
+			if is_inside {
+				intVal, isCorrectType := value.(int64)
+				if !isCorrectType {
+					return fmt.Errorf("incorrect type in sync_map")
+				}
+				intValue = int(intVal)
+			}
+			sync_map.Store(stemmed_word, int64(intValue+1))
+			mtx.Unlock()
 		}
 	}
 	return nil
