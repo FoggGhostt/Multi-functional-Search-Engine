@@ -1,45 +1,21 @@
 package indexer
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"search-engine/pkg/models"
+	"search-engine/pkg/mongodb"
 	"search-engine/pkg/parser"
 	"sync"
-
 	// "go.mongodb.org/mongo-driver/bson"
 	// "go.mongodb.org/mongo-driver/mongo"
 	// "go.mongodb.org/mongo-driver/mongo/options"
 	// "go.mongodb.org/mongo-driver/mongo/readpref"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const FILE_BLOCK_LIMIT = 2 << 23
 const ERROR_CHANEL_SIZE = 100
-
-// type InvIndex []TokenInfo
-
-// type TokenInfo struct {
-//     Token string
-//     Occures []OccureInfo
-// }
-
-// type OccureInfo struct {
-// 	FilePath string
-// 	OccureCount int64
-// }
-
-type InvIndex []TokenInfo
-
-type TokenInfo struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty"`
-	Token   string             `bson:"token"`
-	Occures []OccureInfo       `bson:"occures"`
-}
-
-type OccureInfo struct {
-	FilePath    string `bson:"file_path"`
-	OccureCount int64  `bson:"occure_count"`
-}
 
 func IndexFiles(filePaths []string) error {
 	var syncInvertedIndex sync.Map
@@ -93,15 +69,15 @@ func IndexFiles(filePaths []string) error {
 						syncValue, is_inside := syncInvertedIndex.Load(key)
 
 						if is_inside {
-							tokenInfo, isCorrectType := syncValue.(TokenInfo)
+							tokenInfo, isCorrectType := syncValue.(models.TokenInfo)
 							if !isCorrectType {
 								errCh <- fmt.Errorf("incorrect type in sync_map")
 								return false
 							}
-							tokenInfo.Occures = append(tokenInfo.Occures, OccureInfo{FilePath: filePath, OccureCount: intValue})
+							tokenInfo.Occures = append(tokenInfo.Occures, models.OccureInfo{FilePath: filePath, OccureCount: intValue})
 							syncInvertedIndex.Store(strKey, tokenInfo)
 						} else {
-							tokenInfo := TokenInfo{Token: strKey, Occures: []OccureInfo{OccureInfo{FilePath: filePath, OccureCount: intValue}}}
+							tokenInfo := models.TokenInfo{Token: strKey, Occures: []models.OccureInfo{models.OccureInfo{FilePath: filePath, OccureCount: intValue}}}
 							syncInvertedIndex.Store(strKey, tokenInfo)
 						}
 
@@ -121,8 +97,33 @@ func IndexFiles(filePaths []string) error {
 	default:
 	}
 
+	invertIndex := make([]models.TokenInfo, 0) //  Обратный индекс для хранения в базе данных
+
+	syncInvertedIndex.Range(func(key, value any) bool {
+		tokenInfo, isCorrectType := value.(models.TokenInfo)
+		if !isCorrectType {
+			// IDK what I should do there)) Не хочу создавать переменную для ошибки - коряво как-то, хелп)
+			return false
+		}
+		invertIndex = append(invertIndex, tokenInfo)
+		return true
+	})
+
 	// DataBase interaction ?
 	mongoURI := "mongodb://localhost:27017"
+
+	cnf := mongodb.DefaultConfig()
+	cnf.DbName = "mongo"
+
+	db, err := mongodb.Init(mongoURI, cnf)
+	if err != nil {
+		return err
+	}
+
+	err = db.UpsertTokenInfos(context.Background(), invertIndex) // добавляю индекс в базу
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
