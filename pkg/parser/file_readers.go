@@ -72,7 +72,7 @@ func Parse_txt_File(filePath string) (*sync.Map, error) {
 		if err != nil {
 			return nil, fmt.Errorf("cant read the file")
 		}
-		for i := 0; i < byte_read_count; i++ {
+		for i := range byte_read_count {
 			if is_start_byte(buffer[byte_read_count-i-1]) {
 				undecoded_tail_len = i + 1 //  Находим место, где начинается первый байт символа unicode
 				break
