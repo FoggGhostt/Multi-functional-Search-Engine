@@ -6,8 +6,11 @@ services:
     container_name: my-mongo
     ports:
       - "27017:27017"
-    # volumes:
-    #   - ./data/db:/data/db
-    # environment:
-    #   MONGO_INITDB_ROOT_USERNAME: root
-    #   MONGO_INITDB_ROOT_PASSWORD: example
+    
+  app:
+    build: .
+    container_name: Search-Engine
+    environment:
+      - MONGO_URI=mongodb://my-mongo:27017/InvertIndex
+    depends_on:
+      - mongo

@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"fmt"
 	"mime"
 	"path/filepath"
 	"strings"
@@ -16,7 +15,7 @@ func ParseFile(file_path string) (*sync.Map, error) {
 	var sync_map_ptr *sync.Map
 	var err error
 
-	fmt.Println(mimeType)
+	// fmt.Println(mimeType)
 
 	if mimeType == "text/plain" {
 		sync_map_ptr, err = Parse_txt_File(file_path)

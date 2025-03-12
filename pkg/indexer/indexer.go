@@ -8,10 +8,6 @@ import (
 	"search-engine/pkg/mongodb"
 	"search-engine/pkg/parser"
 	"sync"
-	// "go.mongodb.org/mongo-driver/bson"
-	// "go.mongodb.org/mongo-driver/mongo"
-	// "go.mongodb.org/mongo-driver/mongo/options"
-	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 const FILE_BLOCK_LIMIT = 2 << 23
@@ -23,8 +19,8 @@ func IndexFiles(filePaths []string) error {
 	var wg sync.WaitGroup
 	errCh := make(chan error, ERROR_CHANEL_SIZE)
 
-	curFileBlockSize := 0
-	curFileBlock := make([]string, 0)
+	curFileListSize := 0
+	curFileList := make([]string, 0)
 	for i, filePath := range filePaths {
 		file, err := os.Open(filePath)
 		if err != nil {
@@ -34,19 +30,19 @@ func IndexFiles(filePaths []string) error {
 		if err != nil {
 			return fmt.Errorf("cant get stat of the file")
 		}
-		curFileBlockSize += int(fi.Size())
-		curFileBlock = append(curFileBlock, filePath)
+		curFileListSize += int(fi.Size())
+		curFileList = append(curFileList, filePath)
 		file.Close()
-		if curFileBlockSize > FILE_BLOCK_LIMIT || i == len(filePaths)-1 {
-			fileBlockCopy := make([]string, len(curFileBlock))
-			copy(fileBlockCopy, curFileBlock)
-			curFileBlock = make([]string, 0)
-			curFileBlockSize = 0
+		if curFileListSize > FILE_BLOCK_LIMIT || i == len(filePaths)-1 {
+			fileListCopy := make([]string, len(curFileList))
+			copy(fileListCopy, curFileList)
+			curFileList = make([]string, 0)
+			curFileListSize = 0
 
 			wg.Add(1)
-			go func(filesBlock []string) { //  Одна горутина берет пак файлов, каждый из них парсит и потом заносит все изменения в общую мапу syncInvertedIndex
+			go func(filesList []string) { //  Одна горутина берет пак файлов, каждый из них парсит и потом заносит все изменения в общую мапу syncInvertedIndex
 				defer wg.Done()
-				for _, filePath := range filesBlock {
+				for _, filePath := range filesList {
 					sync_map, err := parser.ParseFile(filePath)
 					if err != nil {
 						errCh <- err
@@ -65,6 +61,7 @@ func IndexFiles(filePaths []string) error {
 						}
 
 						mtx.Lock()
+						defer mtx.Unlock()
 
 						syncValue, is_inside := syncInvertedIndex.Load(key)
 
@@ -74,19 +71,25 @@ func IndexFiles(filePaths []string) error {
 								errCh <- fmt.Errorf("incorrect type in sync_map")
 								return false
 							}
-							tokenInfo.Occures = append(tokenInfo.Occures, models.OccureInfo{FilePath: filePath, OccureCount: intValue})
+							tokenInfo.Occures = append(tokenInfo.Occures, models.OccureInfo{
+								FilePath:    filePath,
+								OccureCount: intValue,
+							})
 							syncInvertedIndex.Store(strKey, tokenInfo)
 						} else {
-							tokenInfo := models.TokenInfo{Token: strKey, Occures: []models.OccureInfo{models.OccureInfo{FilePath: filePath, OccureCount: intValue}}}
+							tokenInfo := models.TokenInfo{
+								Token: strKey,
+								Occures: []models.OccureInfo{
+									{FilePath: filePath, OccureCount: intValue},
+								},
+							}
 							syncInvertedIndex.Store(strKey, tokenInfo)
 						}
-
-						mtx.Unlock()
 
 						return true
 					})
 				}
-			}(fileBlockCopy)
+			}(fileListCopy)
 		}
 	}
 	wg.Wait()
@@ -109,11 +112,13 @@ func IndexFiles(filePaths []string) error {
 		return true
 	})
 
-	// DataBase interaction ?
-	mongoURI := "mongodb://localhost:27017"
+	mongoURI := os.Getenv("MONGO_URI")
+	if mongoURI == "" {
+		mongoURI = "mongodb://localhost:27017" // Значение по умолчанию для локального запуска без Docker
+	}
 
 	cnf := mongodb.DefaultConfig()
-	cnf.DbName = "mongo"
+	cnf.DbName = "InvertIndex"
 
 	db, err := mongodb.Init(mongoURI, cnf)
 	if err != nil {
