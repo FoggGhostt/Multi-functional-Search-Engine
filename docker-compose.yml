@@ -12,5 +12,11 @@ services:
     container_name: Search-Engine
     environment:
       - MONGO_URI=mongodb://my-mongo:27017/InvertIndex
+      - RUSSIAN_STOP_WORDS_PATH=/app/pkg/parser/utils/russian_stop_words.txt
+      - ENGLISH_STOP_WORDS_PATH=/app/pkg/parser/utils/english_stop_words.txt
+    volumes:
+      - ./file.txt:/app/test_file_1.txt
+      - ./pkg/parser/utils/english_stop_words.txt:/app/pkg/parser/utils/english_stop_words.txt
+      - ./pkg/parser/utils/russian_stop_words.txt:/app/pkg/parser/utils/russian_stop_words.txt
     depends_on:
       - mongo

@@ -21,7 +21,7 @@ func (wordsHandle *StopWordsHandleStruct) InitializeWordMap(filePath string) err
 	}
 	file, err := os.Open(filePath)
 	if err != nil {
-		return fmt.Errorf("cant open the file")
+		return fmt.Errorf("cant open the file, %s", filePath)
 	}
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
