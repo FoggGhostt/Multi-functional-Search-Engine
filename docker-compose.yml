@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:5.0
+    container_name: my-mongo
+    ports:
+      - "27017:27017"
+    
+  app:
+    build: .
+    container_name: Search-Engine
+    environment:
+      - MONGO_URI=mongodb://my-mongo:27017/InvertIndex
+    depends_on:
+      - mongo
