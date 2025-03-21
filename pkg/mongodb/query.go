@@ -5,6 +5,7 @@ import (
 	"search-engine/pkg/models"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -30,4 +31,18 @@ func (d *DB) UpsertTokenInfos(ctx context.Context, tokenInfos []models.TokenInfo
 		}
 	}
 	return nil
+}
+
+func (d *DB) FindRelDocs(ctx context.Context, token string) (*models.TokenInfo, error) {
+	coll := d.Cli.Database(d.Cfg.DbName).Collection("InvertIndex")
+	filter := bson.M{"token": token}
+	var tokenInfo models.TokenInfo
+	err := coll.FindOne(ctx, filter).Decode(&tokenInfo)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &tokenInfo, nil
 }

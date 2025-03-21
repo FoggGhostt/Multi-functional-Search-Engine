@@ -108,6 +108,7 @@ func IndexFiles(filePaths []string) error {
 			// IDK what I should do there)) Не хочу создавать переменную для ошибки - коряво как-то, хелп)
 			return false
 		}
+		println(tokenInfo.Token)
 		invertIndex = append(invertIndex, tokenInfo)
 		return true
 	})

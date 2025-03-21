@@ -6,6 +6,7 @@ import (
 	"os"
 	"search-engine/pkg/indexer"
 	"search-engine/pkg/parser"
+	"search-engine/pkg/search"
 )
 
 func main() {
@@ -19,8 +20,6 @@ func main() {
 		russian_stop_words_path = "../pkg/parser/utils/russian_stop_words.txt"
 	}
 
-	fmt.Println(russian_stop_words_path)
-
 	err := parser.StopWordsHandle.InitializeWordMap(english_stop_words_path)
 	if err != nil {
 		log.Fatalf("Cannot scan stop-words: %v %s", err, english_stop_words_path)
@@ -30,26 +29,39 @@ func main() {
 	if err != nil {
 		log.Fatalf("Cannot scan stop-words: %v %s", err, russian_stop_words_path)
 	}
-	// parser.StopWordsHandle.WordsMap.Range(func(key, value any) bool {
-	// 	fmt.Println(key)
-	// 	return true
-	// })
 
 	var filepath string
-	fmt.Scan(&filepath)
 
-	// if res, err := parser.ParseFile(filepath); err == nil {
+	for range 4 {
+		fmt.Scan(&filepath)
+		if err := indexer.IndexFiles([]string{filepath}); err == nil {
+			fmt.Println("okey")
+		} else {
+			fmt.Println(err)
+		}
+	}
+
+	tokens, err := search.Search("дом пенал кровать")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	println(tokens[0])
+	println(tokens[1])
+	println(tokens[2])
+	println(tokens[3])
+
+	// fmt.Scan(&filepath)
+	// if err := indexer.IndexFiles([]string{filepath}); err == nil {
 	// 	fmt.Println("okey")
-	// 	res.Range(func(key, value any) bool {
-	// 		fmt.Println(key, "-->", value)
-	// 		return true
-	// 	})
 	// } else {
 	// 	fmt.Println(err)
 	// }
-	if err := indexer.IndexFiles([]string{filepath}); err == nil {
-		fmt.Println("okey")
-	} else {
-		fmt.Println(err)
-	}
+
+	// fmt.Scan(&filepath)
+	// if err := indexer.IndexFiles([]string{filepath}); err == nil {
+	// 	fmt.Println("okey")
+	// } else {
+	// 	fmt.Println(err)
+	// }
 }
