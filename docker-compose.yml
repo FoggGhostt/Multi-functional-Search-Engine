@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo:5.0
+    image: mongo:4.4 # 5 версия не работает на маке....
     container_name: my-mongo
     ports:
       - "27017:27017"

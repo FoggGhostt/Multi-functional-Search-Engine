@@ -12,7 +12,7 @@ import (
 
 var mtx sync.Mutex
 
-func stem(word string) (string, error) {
+func Stem(word string) (string, error) {
 	r, _ := utf8.DecodeRuneInString(word)
 	if unicode.Is(unicode.Latin, r) {
 		return snowball.Stem(word, "english", false)
@@ -21,18 +21,18 @@ func stem(word string) (string, error) {
 	}
 }
 
-func splitFunc(r rune) bool {
+func SplitFunc(r rune) bool {
 	return unicode.IsSpace(r) || unicode.IsPunct(r)
 }
 
 func Tokenize(text string, sync_map *sync.Map) error {
 	text = strings.ToLower(text)
-	words := strings.FieldsFunc(text, splitFunc)
+	words := strings.FieldsFunc(text, SplitFunc)
 	for _, word := range words {
 		if StopWordsHandle.IsStopWord(word) || word == "" {
 			continue
 		}
-		stemmed_word, err := stem(word)
+		stemmed_word, err := Stem(word)
 		if err != nil {
 			return err
 		}
