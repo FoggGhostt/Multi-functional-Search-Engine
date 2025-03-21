@@ -23,7 +23,7 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int,
 			}
 		}
 	}
-	println(len(filePaths))
+
 	invert_token_map := make(map[string]int) // Создаем обратное соответствие (токен - номер координаты векторов)
 	for i, token := range req_tokens {
 		invert_token_map[token] = i
@@ -60,12 +60,10 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int,
 	for i := range req_tokens {
 		req_vec_tf_idf[i] = float64(token_map[req_tokens[i]]) * math.Log(float64(len(filePaths))/req_vec_idf[i])
 	}
-	println(req_vec_tf_idf)
 	for i := range req_tokens { //  Досчитали метрики tf-idf для матрицы
 		for j := range filePaths {
-			matrix[j][i] *= math.Log(float64(len(filePaths)) / req_vec_tf_idf[i])
+			matrix[j][i] *= math.Log(float64(len(filePaths)) / req_vec_idf[i])
 		}
 	}
-	// fmt.Println(matrix[4][1], matrix[4][1], matrix[4][2], matrix[4][3])
 	return req_vec_tf_idf, matrix, filePaths, nil
 }

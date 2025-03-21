@@ -46,10 +46,9 @@ func main() {
 		fmt.Println(err)
 	}
 
-	println(tokens[0])
-	println(tokens[1])
-	println(tokens[2])
-	println(tokens[3])
+	if len(tokens) != 0 {
+		fmt.Println(tokens[0])
+	}
 
 	// fmt.Scan(&filepath)
 	// if err := indexer.IndexFiles([]string{filepath}); err == nil {
