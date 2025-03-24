@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo:5.0
+    image: mongo:4.4 # 5 версия не работает на маке....
     container_name: my-mongo
     ports:
       - "27017:27017"
@@ -12,6 +12,7 @@ services:
     container_name: Search-Engine
     environment:
       - MONGO_URI=mongodb://my-mongo:27017/InvertIndex
+      - LOCAL_MONGO_URI=mongodb://localhost:27017
       - RUSSIAN_STOP_WORDS_PATH=/app/pkg/parser/utils/russian_stop_words.txt
       - ENGLISH_STOP_WORDS_PATH=/app/pkg/parser/utils/english_stop_words.txt
     volumes:
