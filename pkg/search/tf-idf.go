@@ -6,12 +6,10 @@ import (
 	"search-engine/pkg/parser"
 )
 
-func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int,
-	rel_docs_info []models.TokenInfo) ([]float64, [][]float64, []string, error) {
-	// Функция возвращает вектор и матрицу, вектор - вектор tf-idf для поискового запроса,
-	// а матрица - матрица tf-idf для документов, в которых встречаются токены из нашего запроса
-	// Также для удобства возвращаем сплошной список документов для последующей сортировки запросов
-
+// Функция возвращает вектор и матрицу, вектор - вектор tf-idf для поискового запроса,
+// а матрица - матрица tf-idf для документов, в которых встречаются токены из нашего запроса
+// Также для удобства возвращаем сплошной список документов для последующей сортировки запросов
+func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_docs_info []models.TokenInfo) ([]float64, [][]float64, []string, error) {
 	filePathMap := make(map[string]bool)
 	filePaths := make([]string, 0) //  Создаем матрицу
 	for _, tokenInfo := range rel_docs_info {

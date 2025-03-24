@@ -114,7 +114,7 @@ func IndexFiles(filePaths []string) error {
 
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
-		mongoURI = "mongodb://localhost:27017" // Значение по умолчанию для локального запуска без Docker
+		mongoURI = os.Getenv("LOCAL_MONGO_URI") // Значение по умолчанию для локального запуска без Docker
 	}
 
 	cnf := mongodb.DefaultConfig()

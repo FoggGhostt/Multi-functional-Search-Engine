@@ -51,8 +51,7 @@ func Search(req string) ([]string, error) {
 	}
 
 	for _, token := range reqTokensWithMatch {
-		_, ok := token_map[token]
-		if ok {
+		if _, ok := token_map[token]; ok {
 			token_map[token]++
 			continue
 		}
