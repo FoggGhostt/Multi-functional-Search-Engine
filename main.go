@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
-	"search-engine/pkg/indexer"
+
+	// "search-engine/pkg/indexer"
+	"search-engine/pkg/API"
 	"search-engine/pkg/parser"
-	"search-engine/pkg/search"
 )
 
 func main() {
@@ -30,23 +30,5 @@ func main() {
 		log.Fatalf("Cannot scan stop-words: %v %s", err, russian_stop_words_path)
 	}
 
-	var filepath string
-
-	for range 4 {
-		fmt.Scan(&filepath)
-		if err := indexer.IndexFiles([]string{filepath}); err == nil {
-			fmt.Println("okey")
-		} else {
-			fmt.Println(err)
-		}
-	}
-
-	tokens, err := search.Search("дом пенал кровать")
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	if len(tokens) != 0 {
-		fmt.Println(tokens[0])
-	}
+	API.API_Init()
 }
