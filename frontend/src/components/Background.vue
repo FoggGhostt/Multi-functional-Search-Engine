@@ -11,7 +11,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(135deg, #413427, #b35837);
+    background: linear-gradient(135deg, #bea082, #b35837);
     z-index: -1;
 }
 </style>

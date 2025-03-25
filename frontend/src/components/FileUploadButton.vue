@@ -1,22 +1,49 @@
 <template>
     <div class="upload-wrapper">
-        <input type="file" ref="fileInput" @change="handleFileChange" hidden />
-        <button class="upload-button" @click="triggerFileInput" title="Загрузить файл">
+        <input type="file" ref="fileInput" @change="handleFileChange" multiple hidden />
+        <button :class="['upload-button', uploadStatus]" @click="triggerFileInput" title="Загрузить файл">
             ⬆
         </button>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+    data() {
+        return {
+            uploadStatus: null
+        }
+    },
     methods: {
         triggerFileInput() {
             this.$refs.fileInput.click();
         },
         handleFileChange(event) {
-            const file = event.target.files[0];
-            if (file) {
-                this.$emit('file-upload', file);
+            const files = event.target.files;
+            if (files.length > 0) {
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
+                axios.post('http://localhost:8080/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                })
+                    .then(response => {
+                        console.log('Файлы успешно загружены', response.data);
+                        this.uploadStatus = 'success';
+                        // Сброс значения input, чтобы можно было повторить выбор файлов
+                        this.$refs.fileInput.value = null;
+                        setTimeout(() => this.uploadStatus = null, 1000);
+                    })
+                    .catch(error => {
+                        console.error('Ошибка загрузки файлов', error);
+                        this.uploadStatus = 'error';
+                        // Сброс значения input, чтобы можно было повторить попытку загрузки
+                        this.$refs.fileInput.value = null;
+                        setTimeout(() => this.uploadStatus = null, 1000);
+                    });
             }
         }
     }
@@ -32,7 +59,7 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: rgba(7, 7, 7, 0.400);
+    background-color: rgba(7, 7, 7, 0.4);
     color: rgb(170, 55, 55);
     border: 2px solid black;
     font-family: 'Courier New', monospace;
@@ -44,5 +71,13 @@ export default {
 
 .upload-button:hover {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.upload-button.success {
+    background-color: green !important;
+}
+
+.upload-button.error {
+    background-color: red !important;
 }
 </style>

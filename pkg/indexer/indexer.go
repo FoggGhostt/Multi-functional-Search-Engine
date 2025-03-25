@@ -47,6 +47,9 @@ func IndexFiles(filePaths []string) error {
 					if err != nil {
 						errCh <- err
 					}
+					if sync_map == nil {
+						return
+					}
 
 					sync_map.Range(func(key, value any) bool {
 						strKey, isCorrectType := key.(string)
@@ -114,7 +117,8 @@ func IndexFiles(filePaths []string) error {
 
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
-		mongoURI = os.Getenv("LOCAL_MONGO_URI") // Значение по умолчанию для локального запуска без Docker
+		mongoURI = "mongodb://localhost:27017"
+		// mongoURI = os.Getenv("LOCAL_MONGO_URI") // Значение по умолчанию для локального запуска без Docker
 	}
 
 	cnf := mongodb.DefaultConfig()
