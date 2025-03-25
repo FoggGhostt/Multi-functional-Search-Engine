@@ -48,7 +48,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 	fmt.Println("Start downloading files")
-	if err := r.ParseMultipartForm(100 << 20); err != nil {
+	if err := r.ParseMultipartForm(100 << 20); err != nil { // лимит в 100 мб
 		http.Error(w, "Huge files size", http.StatusBadRequest)
 		return
 	}
@@ -74,7 +74,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		defer file.Close()
 
-		fullFilePath := "./files/" + fileHeader.Filename
+		fullFilePath := "./files/" + fileHeader.Filename // папка с загружаемыми файлами
 
 		dst, err := os.Create(fullFilePath)
 		if err != nil {
@@ -93,11 +93,43 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 
-	go indexer.IndexFiles(files_to_index)
+	indexer.IndexFiles(files_to_index)
+}
+
+func downloadFileHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	filePath := r.URL.Query().Get("path")
+	if filePath == "" {
+		http.Error(w, "No path", http.StatusBadRequest)
+		return
+	}
+
+	f, err := os.Open(filePath)
+	if err != nil {
+		http.Error(w, "Not found", http.StatusNotFound)
+		return
+	}
+	defer f.Close()
+
+	fileInfo, err := f.Stat()
+	if err != nil {
+		http.Error(w, "No file info", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Disposition", "attachment; filename=\""+path.Base(filePath)+"\"")
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", fileInfo.Size()))
+
+	io.Copy(w, f)
 }
 
 func API_Init() {
 	http.HandleFunc("/upload", uploadHandler)
 	http.HandleFunc("/api/search", searchHandler)
+	http.HandleFunc("/download", downloadFileHandler)
 	http.ListenAndServe(":8080", nil)
 }

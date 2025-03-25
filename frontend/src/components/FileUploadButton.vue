@@ -33,14 +33,12 @@ export default {
                     .then(response => {
                         console.log('Файлы успешно загружены', response.data);
                         this.uploadStatus = 'success';
-                        // Сброс значения input, чтобы можно было повторить выбор файлов
                         this.$refs.fileInput.value = null;
                         setTimeout(() => this.uploadStatus = null, 1000);
                     })
                     .catch(error => {
                         console.error('Ошибка загрузки файлов', error);
                         this.uploadStatus = 'error';
-                        // Сброс значения input, чтобы можно было повторить попытку загрузки
                         this.$refs.fileInput.value = null;
                         setTimeout(() => this.uploadStatus = null, 1000);
                     });

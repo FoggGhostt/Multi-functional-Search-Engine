@@ -22,8 +22,8 @@ export default {
     },
     methods: {
         handleUpload(result) {
-            // Заглушка для загрузки
-            console.log("Загрузка файла для:", result);
+            const downloadUrl = `http://localhost:8080/download?path=${encodeURIComponent(result.path)}`;
+            window.location.href = downloadUrl;
         }
     }
 }
@@ -31,35 +31,23 @@ export default {
 
 <style scoped>
 .results-window {
-    /* Зафиксируем ширину и высоту, чтобы включить скролл */
     width: 600px;
     height: 80vh;
-    /* или 90vh, если нужно выше */
     overflow-y: auto;
-
-    /* Небольшое скругление углов */
     border-radius: 20px;
-
-    /* Фон, похожий на ваши стили */
     background-color: rgba(45, 40, 40, 0.121);
     border: 2px solid black;
     box-shadow: inset 0 0 0 2px #333;
-
-    /* Отступы для содержимого */
     padding: 1rem;
 }
 
-/* Каждая карточка результата */
 .result-card {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     background-color: rgba(255, 255, 255, 0.1);
     margin-bottom: 1rem;
     padding: 0.6rem 1rem;
-
-    /* Небольшое скругление для карточки */
     border-radius: 20px;
 
     box-shadow: inset 0 0 0 2px #333;
@@ -69,7 +57,6 @@ export default {
     margin-bottom: 0;
 }
 
-/* Текст внутри карточки */
 .card-text {
     display: flex;
     flex-direction: column;
@@ -77,7 +64,6 @@ export default {
     color: #070606;
 }
 
-/* Кнопка загрузки (стрелочка) */
 .upload-btn {
     margin-left: 1rem;
     width: 40px;
@@ -99,14 +85,12 @@ export default {
 
 .results-window::-webkit-scrollbar {
     width: 6px;
-    /* толщина скроллбара */
 }
 
 .results-window::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 
-    /* Уменьшаем "высоту" за счёт внутренних отступов */
     margin-top: 10px;
     margin-bottom: 10px;
 }
