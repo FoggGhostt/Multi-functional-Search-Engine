@@ -33,6 +33,8 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_doc
 	req_vec_idf := make([]float64, len(req_tokens))    //  Вектор счетчиков вхождения токенов запроса в коллекцию документов
 	req_vec_tf_idf := make([]float64, len(req_tokens)) //  Итоговый tf-idf вектор запроса
 
+	files_lengths := make([]float64, len(filePaths))
+
 	for i := range filePaths { //  Пробегаемся по документам, токенизируем их и заполняем матрицу tf-idf
 		syncMap, err := parser.ParseFile(filePaths[i])
 		if err != nil {
@@ -47,6 +49,7 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_doc
 			if !isCorrectType {
 				return false
 			}
+			files_lengths[i] += float64(intValue) // Считаем общее количество токенов в документе
 			tokenIndex, ok := invert_token_map[token]
 			if ok {
 				req_vec_idf[tokenIndex] += 1.0
@@ -60,6 +63,7 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_doc
 	}
 	for i := range req_tokens { //  Досчитали метрики tf-idf для матрицы
 		for j := range filePaths {
+			matrix[j][j] /= files_lengths[j]
 			matrix[j][i] *= math.Log(float64(len(filePaths)) / req_vec_idf[i])
 		}
 	}
