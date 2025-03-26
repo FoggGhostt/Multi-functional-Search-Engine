@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - GitHub_actions
+      - Frontend
   pull_request:
     branches: [main]
 
@@ -32,3 +33,24 @@ jobs:
       - name: Push Docker image
         run: |
           sudo docker push ${{ secrets.DOCKER_USERNAME }}/search-engine:${{ github.sha }}
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies and build Vue app
+        working-directory: frontend
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: frontend/dist
+
+
+      - name: Start Docker Compose
+        run: sudo docker-compose up -d
