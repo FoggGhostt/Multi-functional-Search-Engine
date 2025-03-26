@@ -1,1 +1,6 @@
-export const publicPath = '/Multi-functional-Search-Engine/';
+// export const publicPath = '/Multi-functional-Search-Engine/';
+
+module.exports = {
+    publicPath: '/Multi-functional-Search-Engine/'
+  };
+  

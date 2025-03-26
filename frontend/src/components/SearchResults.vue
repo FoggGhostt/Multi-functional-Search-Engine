@@ -22,7 +22,7 @@ export default {
     },
     methods: {
         handleUpload(result) {
-            const downloadUrl = `http://localhost:8080/download?path=${encodeURIComponent(result.path)}`;
+            const downloadUrl = `${process.env.VUE_APP_API_URL}/download?path=${encodeURIComponent(result.path)}`;
             window.location.href = downloadUrl;
         }
     }
