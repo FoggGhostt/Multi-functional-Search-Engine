@@ -29,6 +29,7 @@ var (
 
 func Init(url string, config *Config) (*DB, error) {
 	dboption := options.Client().ApplyURI(url)
+	fmt.Println(url)
 
 	if config == nil {
 		return nil, fmt.Errorf("db config is empty")

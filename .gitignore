@@ -7,3 +7,5 @@
 *.toc
 output.txt
 build
+frontend/node_modules
+.vite

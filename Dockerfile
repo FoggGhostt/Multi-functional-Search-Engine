@@ -10,5 +10,5 @@ RUN go build -o main .
 # Указываем переменную окружения (может быть перезаписана в docker-compose.yml)
 ENV MONGO_URI=mongodb://my-mongo:27017/InvertIndex
 
-# CMD ["./main"]
-CMD ["tail", "-f", "/dev/null"]
+CMD ["./main"]
+# CMD ["tail", "-f", "/dev/null"]
