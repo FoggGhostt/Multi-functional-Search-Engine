@@ -1,6 +1,7 @@
 package search
 
 import (
+	"fmt"
 	"math"
 	"search-engine/pkg/models"
 	"search-engine/pkg/parser"
@@ -26,8 +27,9 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_doc
 	for i, token := range req_tokens {
 		invert_token_map[token] = i
 	}
-	matrix := make([][]float64, len(filePaths)) //  Создаем матрицу
-	for i := 0; i < len(filePaths); i++ {
+	matrix := make([][]float64, len(filePaths)) //  Создаем матрицу)
+	for i := range filePaths {
+		fmt.Println(filePaths[i])
 		matrix[i] = make([]float64, len(req_tokens))
 	}
 	req_vec_idf := make([]float64, len(req_tokens))    //  Вектор счетчиков вхождения токенов запроса в коллекцию документов
@@ -59,12 +61,12 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_doc
 		})
 	}
 	for i := range req_tokens {
-		req_vec_tf_idf[i] = float64(token_map[req_tokens[i]]) * math.Log(float64(len(filePaths))/req_vec_idf[i])
+		req_vec_tf_idf[i] = float64(token_map[req_tokens[i]]) * math.Log((float64(len(filePaths))/req_vec_idf[i])+1.0)
 	}
 	for i := range req_tokens { //  Досчитали метрики tf-idf для матрицы
 		for j := range filePaths {
-			matrix[j][j] /= files_lengths[j]
-			matrix[j][i] *= math.Log(float64(len(filePaths)) / req_vec_idf[i])
+			matrix[j][i] /= files_lengths[j]
+			// matrix[j][i] *= math.Log(float64(len(filePaths)) / req_vec_idf[i])
 		}
 	}
 	return req_vec_tf_idf, matrix, filePaths, nil

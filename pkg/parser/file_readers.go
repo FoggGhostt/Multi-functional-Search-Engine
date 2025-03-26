@@ -11,7 +11,7 @@ import (
 	// "github.com/dslipak/pdf"
 )
 
-const BLOCK_SIZE = 2 << (20) //  пока не очень понимаю, как его формировать
+const BLOCK_SIZE = 2 << (23) //  пока не очень понимаю, как его формировать
 const UTF8_START_BYTE = 0x80
 const MIDDLE_UTF8_BYTE_SIZE = 6
 const START_OF_MIDDLE_UTF8_BYTE = 0b10

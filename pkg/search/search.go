@@ -2,6 +2,7 @@ package search
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"os"
 	"search-engine/pkg/models"
@@ -17,15 +18,19 @@ type VecInfo struct {
 }
 
 func findAngle(vec1, vec2 []float64) float64 {
-	sum1 := 0.0
-	sum2 := 0.0
 	scalarProd := 0.0
 	for i := 0; i < len(vec1); i++ {
-		sum1 += (vec1[i] * vec1[i])
-		sum2 += (vec2[i] * vec2[i])
 		scalarProd += vec1[i] * vec2[i]
 	}
-	return scalarProd / (math.Sqrt(sum1 * sum2))
+	return scalarProd / (findVecMod(vec1) * findVecMod(vec2))
+}
+
+func findVecMod(vec []float64) float64 {
+	sum := 0.0
+	for i := range vec {
+		sum += (vec[i] * vec[i])
+	}
+	return math.Sqrt(sum)
 }
 
 func Search(req string) ([]string, error) {
@@ -71,14 +76,24 @@ func Search(req string) ([]string, error) {
 		return nil, err
 	}
 
+	fmt.Println(matrix[0][0], filePaths[0], matrix[1][0], filePaths[1])
+
 	docVecsToSort := make([]VecInfo, 0)
 	for i := range filePaths {
 		docVecsToSort = append(docVecsToSort, VecInfo{vec: matrix[i], filePath: filePaths[i]})
 	}
 
 	sort.Slice(docVecsToSort, func(i, j int) bool {
+		cos_i := findAngle(docVecsToSort[i].vec, req_vec_tf_idf)
+		cos_j := findAngle(docVecsToSort[j].vec, req_vec_tf_idf)
+		fmt.Println(cos_i, cos_j)
+		if cos_i == cos_j {
+			return findVecMod(docVecsToSort[i].vec) > findVecMod(docVecsToSort[j].vec)
+		}
 		return findAngle(docVecsToSort[i].vec, req_vec_tf_idf) > findAngle(docVecsToSort[j].vec, req_vec_tf_idf)
 	})
+
+	fmt.Println(docVecsToSort[0].filePath, docVecsToSort[1].filePath)
 
 	searchResult := make([]string, len(docVecsToSort))
 

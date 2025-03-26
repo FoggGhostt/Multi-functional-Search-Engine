@@ -1,6 +1,8 @@
 DBConfig:
   MongoURI: mongodb://my-mongo:27017/InvertIndex
 SearchEngineConfig:
-  RussianStopWordsPath: /app/pkg/parser/utils/russian_stop_words.txt
-  EnglishStopWordsPath: /app/pkg/parser/utils/english_stop_words.txt
+  # RussianStopWordsPath: /app/pkg/parser/utils/russian_stop_words.txt
+  # EnglishStopWordsPath: /app/pkg/parser/utils/english_stop_words.txt
+  RussianStopWordsPath: ../pkg/parser/utils/russian_stop_words.txt
+  EnglishStopWordsPath: ../pkg/parser/utils/english_stop_words.txt
   Port: 8080
