@@ -1,10 +1,11 @@
 package search
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"search-engine/pkg/models"
-	"search-engine/pkg/parser"
+	"search-engine/pkg/mongodb"
 )
 
 // Функция возвращает вектор и матрицу, вектор - вектор tf-idf для поискового запроса,
@@ -37,28 +38,24 @@ func Create_TF_IDF_Matrix(req_tokens []string, token_map map[string]int, rel_doc
 
 	files_lengths := make([]float64, len(filePaths))
 
+	db, err := mongodb.GetDB()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
 	for i := range filePaths { //  Пробегаемся по документам, токенизируем их и заполняем матрицу tf-idf
-		syncMap, err := parser.ParseFile(filePaths[i])
+		docInfo, err := db.GetFileIndex(context.Background(), filePaths[i])
 		if err != nil {
 			return nil, nil, nil, err
 		}
-		syncMap.Range(func(key, value any) bool {
-			token, isCorrectType := key.(string)
-			if !isCorrectType {
-				return false
-			}
-			intValue, isCorrectType := value.(int64)
-			if !isCorrectType {
-				return false
-			}
-			files_lengths[i] += float64(intValue) // Считаем общее количество токенов в документе
-			tokenIndex, ok := invert_token_map[token]
+		for _, tokInfo := range docInfo.Tokens {
+			files_lengths[i] += float64(tokInfo.OccureCount) // Считаем общее количество токенов в документе
+			tokenIndex, ok := invert_token_map[tokInfo.Token]
 			if ok {
 				req_vec_idf[tokenIndex] += 1.0
-				matrix[i][tokenIndex] += float64(intValue)
+				matrix[i][tokenIndex] += float64(tokInfo.OccureCount)
 			}
-			return true
-		})
+		}
 	}
 	for i := range req_tokens {
 		req_vec_tf_idf[i] = float64(token_map[req_tokens[i]]) * math.Log((float64(len(filePaths))/req_vec_idf[i])+1.0)

@@ -2,7 +2,6 @@
     <div class="results-window">
         <div v-for="(result, index) in results" :key="index" class="result-card">
             <div class="card-text">
-                <!-- Замените 'first' и 'second' на реальные поля вашего объекта -->
                 <div class="card-field">{{ result.name }}</div>
                 <div class="card-field">{{ result.path }}</div>
             </div>
@@ -101,3 +100,4 @@ export default {
     border: 1px solid black;
 }
 </style>
+  

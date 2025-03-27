@@ -1,5 +1,5 @@
 DBConfig:
-  MongoURI: mongodb://my-mongo:27017/InvertIndex
+  MongoURI: mongodb://localhost:27017
 SearchEngineConfig:
   # RussianStopWordsPath: /app/pkg/parser/utils/russian_stop_words.txt
   # EnglishStopWordsPath: /app/pkg/parser/utils/english_stop_words.txt

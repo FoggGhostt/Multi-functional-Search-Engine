@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"search-engine/pkg/config"
 	"search-engine/pkg/models"
 	"search-engine/pkg/mongodb"
 	"search-engine/pkg/parser"
@@ -19,15 +18,8 @@ func IndexFiles(filePaths []string) error {
 	var mtx sync.Mutex
 	var wg sync.WaitGroup
 	errCh := make(chan error, ERROR_CHANEL_SIZE)
-	config, err := config.GetConfig()
-	if err != nil {
-		return err
-	}
-	mongoURI := config.DBConfig.MongoURI
-	dbConfig := mongodb.DefaultConfig()
-	dbConfig.DbName = "InvertIndex"
 
-	db, err := mongodb.Init(mongoURI, dbConfig)
+	db, err := mongodb.GetDB()
 	if err != nil {
 		return err
 	}

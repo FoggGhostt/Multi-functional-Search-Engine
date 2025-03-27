@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"fmt"
+	"search-engine/pkg/config"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -86,4 +87,21 @@ func DefaultConfig() *Config {
 
 func (d *DB) Close() {
 	d.Cli.Disconnect(context.TODO())
+}
+
+func GetDB() (*DB, error) {
+	config, err := config.GetConfig()
+	if err != nil {
+		return nil, err
+	}
+	mongoURI := config.DBConfig.MongoURI
+
+	cnf := DefaultConfig()
+	cnf.DbName = "InvertIndex"
+
+	db, err := Init(mongoURI, cnf)
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
 }

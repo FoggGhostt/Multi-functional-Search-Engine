@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"os"
 	"search-engine/pkg/models"
 	"search-engine/pkg/mongodb"
 	"sort"
@@ -19,7 +18,7 @@ type VecInfo struct {
 
 func findAngle(vec1, vec2 []float64) float64 {
 	scalarProd := 0.0
-	for i := 0; i < len(vec1); i++ {
+	for i := range vec1 {
 		scalarProd += vec1[i] * vec2[i]
 	}
 	return scalarProd / (findVecMod(vec1) * findVecMod(vec2))
@@ -42,15 +41,7 @@ func Search(req string) ([]string, error) {
 	relevant_docs_info := make([]models.TokenInfo, 0)
 	token_map := make(map[string]int)
 
-	mongoURI := os.Getenv("MONGO_URI")
-	if mongoURI == "" {
-		mongoURI = "mongodb://localhost:27017" // Значение по умолчанию для локального запуска без Docker
-	}
-
-	cnf := mongodb.DefaultConfig()
-	cnf.DbName = "InvertIndex"
-
-	db, err := mongodb.Init(mongoURI, cnf)
+	db, err := mongodb.GetDB()
 	if err != nil {
 		return nil, err
 	}
