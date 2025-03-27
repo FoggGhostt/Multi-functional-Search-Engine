@@ -14,3 +14,13 @@ type OccureInfo struct {
 	FilePath    string `bson:"file_path"`
 	OccureCount int64  `bson:"occure_count"`
 }
+
+type IndexTokenInfo struct {
+	Token       string `bson:"token"`
+	OccureCount int64  `bson:"occure_count"`
+}
+
+type DocumentInfo struct {
+	Filepath string           `bson:"file_path"`
+	Tokens   []IndexTokenInfo `bson:"tokens"`
+}

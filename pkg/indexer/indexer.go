@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"search-engine/pkg/config"
 	"search-engine/pkg/models"
 	"search-engine/pkg/mongodb"
 	"search-engine/pkg/parser"
@@ -18,6 +19,18 @@ func IndexFiles(filePaths []string) error {
 	var mtx sync.Mutex
 	var wg sync.WaitGroup
 	errCh := make(chan error, ERROR_CHANEL_SIZE)
+	config, err := config.GetConfig()
+	if err != nil {
+		return err
+	}
+	mongoURI := config.DBConfig.MongoURI
+	dbConfig := mongodb.DefaultConfig()
+	dbConfig.DbName = "InvertIndex"
+
+	db, err := mongodb.Init(mongoURI, dbConfig)
+	if err != nil {
+		return err
+	}
 
 	curFileListSize := 0
 	curFileList := make([]string, 0)
@@ -51,6 +64,8 @@ func IndexFiles(filePaths []string) error {
 						return
 					}
 
+					docIndex := models.DocumentInfo{Filepath: filePath, Tokens: make([]models.IndexTokenInfo, 0)}
+
 					sync_map.Range(func(key, value any) bool {
 						strKey, isCorrectType := key.(string)
 						if !isCorrectType {
@@ -62,6 +77,8 @@ func IndexFiles(filePaths []string) error {
 							errCh <- fmt.Errorf("incorrect type in sync_map")
 							return false
 						}
+
+						docIndex.Tokens = append(docIndex.Tokens, models.IndexTokenInfo{Token: strKey, OccureCount: intValue})
 
 						mtx.Lock()
 						defer mtx.Unlock()
@@ -91,6 +108,10 @@ func IndexFiles(filePaths []string) error {
 
 						return true
 					})
+					err = db.UpsertDocInfos(context.Background(), docIndex)
+					if err != nil {
+						errCh <- err
+					}
 				}
 			}(fileListCopy)
 		}
@@ -114,20 +135,6 @@ func IndexFiles(filePaths []string) error {
 		invertIndex = append(invertIndex, tokenInfo)
 		return true
 	})
-
-	mongoURI := os.Getenv("MONGO_URI")
-	if mongoURI == "" {
-		mongoURI = "mongodb://localhost:27017"
-		// mongoURI = os.Getenv("LOCAL_MONGO_URI") // Значение по умолчанию для локального запуска без Docker
-	}
-
-	cnf := mongodb.DefaultConfig()
-	cnf.DbName = "InvertIndex"
-
-	db, err := mongodb.Init(mongoURI, cnf)
-	if err != nil {
-		return err
-	}
 
 	err = db.UpsertTokenInfos(context.Background(), invertIndex) // добавляю индекс в базу
 	if err != nil {
