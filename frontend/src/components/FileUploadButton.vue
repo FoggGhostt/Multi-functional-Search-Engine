@@ -27,7 +27,7 @@ export default {
                 for (let i = 0; i < files.length; i++) {
                     formData.append('files', files[i]);
                 }
-                axios.post(`${process.env.VUE_APP_API_URL}/upload`, formData, {
+                axios.post(`${import.meta.env.VITE_API_URL}/upload`, formData, {
                     headers: { 'Content-Type': 'multipart/form-data' }
                 })
                     .then(response => {

@@ -76,8 +76,6 @@ func Search(req string) ([]string, error) {
 		return nil, err
 	}
 
-	fmt.Println(matrix[0][0], filePaths[0], matrix[1][0], filePaths[1])
-
 	docVecsToSort := make([]VecInfo, 0)
 	for i := range filePaths {
 		docVecsToSort = append(docVecsToSort, VecInfo{vec: matrix[i], filePath: filePaths[i]})
@@ -92,8 +90,6 @@ func Search(req string) ([]string, error) {
 		}
 		return findAngle(docVecsToSort[i].vec, req_vec_tf_idf) > findAngle(docVecsToSort[j].vec, req_vec_tf_idf)
 	})
-
-	fmt.Println(docVecsToSort[0].filePath, docVecsToSort[1].filePath)
 
 	searchResult := make([]string, len(docVecsToSort))
 

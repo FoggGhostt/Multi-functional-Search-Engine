@@ -34,7 +34,7 @@ export default {
     methods: {
         emitSearch() {
             this.isLoading = true;
-            fetch(`${process.env.VUE_APP_API_URL}/api/search?query=${encodeURIComponent(this.query)}`)
+            fetch(`${import.meta.env.VITE_API_URL}/api/search?query=${encodeURIComponent(this.query)}`)
                 .then(res => res.json())
                 .then(data => {
                     this.$emit('search-results', data)
