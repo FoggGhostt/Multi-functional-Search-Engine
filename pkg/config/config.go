@@ -19,7 +19,8 @@ type Config struct {
 }
 
 func GetConfig() (*Config, error) {
-	data, err := os.ReadFile("../config.yaml")
+	config_path := os.Getenv("CONFIG_PATH")
+	data, err := os.ReadFile(config_path)
 	if err != nil {
 		return nil, err
 	}

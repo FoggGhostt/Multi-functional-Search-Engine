@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	// "search-engine/pkg/indexer"
 
@@ -11,6 +12,8 @@ import (
 )
 
 func main() {
+	os.Setenv("CONFIG_PATH", "../config.yaml")
+
 	cnfg, err := config.GetConfig()
 	if err != nil {
 		log.Fatalf("Cannot read config")
