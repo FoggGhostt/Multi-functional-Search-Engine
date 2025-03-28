@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"search-engine/pkg/config"
+	"search-engine/pkg/models"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -89,7 +90,7 @@ func (d *DB) Close() {
 	d.Cli.Disconnect(context.TODO())
 }
 
-func GetDB() (*DB, error) {
+var GetDB = func() (models.DBInterface, error) {
 	config, err := config.GetConfig()
 	if err != nil {
 		return nil, err
