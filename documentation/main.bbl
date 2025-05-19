@@ -1,0 +1,421 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{ctan2}{article}{}
+      \name{author}{3}{}{%
+        {{hash=090f8de6ea6dca0faf7404c65c0c1321}{%
+           family={Bafna},
+           familyi={B\bibinitperiod},
+           given={Prafulla},
+           giveni={P\bibinitperiod}}}%
+        {{hash=7ed81d51aa990bafa29515b47c54320f}{%
+           family={Pramod},
+           familyi={P\bibinitperiod},
+           given={Dhanya},
+           giveni={D\bibinitperiod}}}%
+        {{hash=21cd903b1c9d72b991432a9aadef71ed}{%
+           family={Vaidya},
+           familyi={V\bibinitperiod},
+           given={Anagha},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{b3328f19c0b37966be924206be328d98}
+      \strng{fullhash}{b3328f19c0b37966be924206be328d98}
+      \strng{bibnamehash}{b3328f19c0b37966be924206be328d98}
+      \strng{authorbibnamehash}{b3328f19c0b37966be924206be328d98}
+      \strng{authornamehash}{b3328f19c0b37966be924206be328d98}
+      \strng{authorfullhash}{b3328f19c0b37966be924206be328d98}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Document clustering: TF-IDF approach}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://clck.ru/3K8iF9
+      \endverb
+      \verb{url}
+      \verb https://clck.ru/3K8iF9
+      \endverb
+    \endentry
+    \entry{lemmacomp}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f5f206a34ae39c5ff8202dd25afe7229}{%
+           family={Balakrishnan},
+           familyi={B\bibinitperiod}}}%
+        {{hash=5daa7fad94622be05b6989ad6201cfd9}{%
+           family={Vimala},
+           familyi={V\bibinitperiod}}}%
+        {{hash=221867303eff2b9de7bc5d73287a199c}{%
+           family={Lloyd-Yemoh},
+           familyi={L\bibinithyphendelim Y\bibinitperiod},
+           given={Ethel},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{5f8faac7fe0e3ce9eadc6794f1631c9f}
+      \strng{fullhash}{5f8faac7fe0e3ce9eadc6794f1631c9f}
+      \strng{bibnamehash}{5f8faac7fe0e3ce9eadc6794f1631c9f}
+      \strng{authorbibnamehash}{5f8faac7fe0e3ce9eadc6794f1631c9f}
+      \strng{authornamehash}{5f8faac7fe0e3ce9eadc6794f1631c9f}
+      \strng{authorfullhash}{5f8faac7fe0e3ce9eadc6794f1631c9f}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Stemming and lemmatization: A comparison of retrieval performances}
+      \field{year}{2014}
+      \verb{urlraw}
+      \verb https://goo.su/kVKUZV
+      \endverb
+      \verb{url}
+      \verb https://goo.su/kVKUZV
+      \endverb
+    \endentry
+    \entry{nltk}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ebe418ae757b121b0d636041981fc1d1}{%
+           family={Bird},
+           familyi={B\bibinitperiod}}}%
+        {{hash=c44e1acacdf5711ffa393d32636dc596}{%
+           family={Steven},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{a6ad72a87713a430f7335c5656da28f1}
+      \strng{fullhash}{a6ad72a87713a430f7335c5656da28f1}
+      \strng{bibnamehash}{a6ad72a87713a430f7335c5656da28f1}
+      \strng{authorbibnamehash}{a6ad72a87713a430f7335c5656da28f1}
+      \strng{authornamehash}{a6ad72a87713a430f7335c5656da28f1}
+      \strng{authorfullhash}{a6ad72a87713a430f7335c5656da28f1}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{NLTK: the natural language toolkit}
+      \field{year}{2006}
+      \verb{urlraw}
+      \verb https://goo.su/zZUe
+      \endverb
+      \verb{url}
+      \verb https://goo.su/zZUe
+      \endverb
+    \endentry
+    \entry{elastic}{online}{}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labeltitlesource}{title}
+      \field{title}{Elasticsearch}
+      \field{urlday}{27}
+      \field{urlmonth}{3}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/elastic/elasticsearch
+      \endverb
+      \verb{url}
+      \verb https://github.com/elastic/elasticsearch
+      \endverb
+      \keyw{Elasticsearch,search}
+    \endentry
+    \entry{bm2}{article}{}
+      \name{author}{2}{}{%
+        {{hash=b45c07701111bb0096d76b84fa27def1}{%
+           family={Kadhim},
+           familyi={K\bibinitperiod}}}%
+        {{hash=85653249024d47dfc76e00e17bdb0158}{%
+           family={Ismael},
+           familyi={I\bibinitperiod},
+           given={Ammar},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{7cf3b9e6031804e2e66aa1415897768e}
+      \strng{fullhash}{7cf3b9e6031804e2e66aa1415897768e}
+      \strng{bibnamehash}{7cf3b9e6031804e2e66aa1415897768e}
+      \strng{authorbibnamehash}{7cf3b9e6031804e2e66aa1415897768e}
+      \strng{authornamehash}{7cf3b9e6031804e2e66aa1415897768e}
+      \strng{authorfullhash}{7cf3b9e6031804e2e66aa1415897768e}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Term weighting for feature extraction on Twitter: A comparison between BM25 and TF-IDF}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://clck.ru/3K9MWA
+      \endverb
+      \verb{url}
+      \verb https://clck.ru/3K9MWA
+      \endverb
+    \endentry
+    \entry{stem1}{article}{}
+      \name{author}{1}{}{%
+        {{hash=99a39145292a5649963551f159cf0327}{%
+           family={Lovins},
+           familyi={L\bibinitperiod},
+           given={Julie\bibnamedelima Beth},
+           giveni={J\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{99a39145292a5649963551f159cf0327}
+      \strng{fullhash}{99a39145292a5649963551f159cf0327}
+      \strng{bibnamehash}{99a39145292a5649963551f159cf0327}
+      \strng{authorbibnamehash}{99a39145292a5649963551f159cf0327}
+      \strng{authornamehash}{99a39145292a5649963551f159cf0327}
+      \strng{authorfullhash}{99a39145292a5649963551f159cf0327}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Development of a Stemming Algorithm}
+      \field{year}{1968}
+      \verb{urlraw}
+      \verb http://chuvyr.ru/MT-1968-Lovins.pdf
+      \endverb
+      \verb{url}
+      \verb http://chuvyr.ru/MT-1968-Lovins.pdf
+      \endverb
+    \endentry
+    \entry{lemma1}{article}{}
+      \name{author}{4}{}{%
+        {{hash=4bb6fa63d9c24b506ba51b675ae8f083}{%
+           family={Plisson},
+           familyi={P\bibinitperiod}}}%
+        {{hash=dc37f83c5fd66d0a9977c41ce16d2967}{%
+           family={Joël},
+           familyi={J\bibinitperiod}}}%
+        {{hash=22a57eea6c0769ed701d4f6f91b26bb0}{%
+           family={Lavrac},
+           familyi={L\bibinitperiod},
+           given={Nada},
+           giveni={N\bibinitperiod}}}%
+        {{hash=45648f3eada339c6d0c54df5977880fc}{%
+           family={Mladenic},
+           familyi={M\bibinitperiod},
+           given={Dunja},
+           giveni={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{fd4df75cafca506a66d94777671f1ff1}
+      \strng{fullhash}{0eb82ac7d565caa08c891184388f3934}
+      \strng{bibnamehash}{fd4df75cafca506a66d94777671f1ff1}
+      \strng{authorbibnamehash}{fd4df75cafca506a66d94777671f1ff1}
+      \strng{authornamehash}{fd4df75cafca506a66d94777671f1ff1}
+      \strng{authorfullhash}{0eb82ac7d565caa08c891184388f3934}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{A rule based approach to word lemmatization}
+      \field{year}{2004}
+      \verb{urlraw}
+      \verb https://clck.ru/3K9MdR
+      \endverb
+      \verb{url}
+      \verb https://clck.ru/3K9MdR
+      \endverb
+    \endentry
+    \entry{bm1}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f7666258e8b6fd98e26161a43a7be7f3}{%
+           family={Robertson},
+           familyi={R\bibinitperiod}}}%
+        {{hash=a36e5df6089966dca4b38397aae00efd}{%
+           family={Stephen},
+           familyi={S\bibinitperiod}}}%
+        {{hash=cc9cdb3b111faeedc87e7f6c561d2ff8}{%
+           family={Zaragoza},
+           familyi={Z\bibinitperiod},
+           given={Hugo},
+           giveni={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{f0a2bfb8afb93f12dec6aaefe2c3199a}
+      \strng{fullhash}{f0a2bfb8afb93f12dec6aaefe2c3199a}
+      \strng{bibnamehash}{f0a2bfb8afb93f12dec6aaefe2c3199a}
+      \strng{authorbibnamehash}{f0a2bfb8afb93f12dec6aaefe2c3199a}
+      \strng{authornamehash}{f0a2bfb8afb93f12dec6aaefe2c3199a}
+      \strng{authorfullhash}{f0a2bfb8afb93f12dec6aaefe2c3199a}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{The probabilistic relevance framework: BM25 and beyond}
+      \field{year}{2009}
+      \verb{urlraw}
+      \verb https://clck.ru/3K9MCh
+      \endverb
+      \verb{url}
+      \verb https://clck.ru/3K9MCh
+      \endverb
+    \endentry
+    \entry{spacy}{article}{}
+      \name{author}{8}{}{%
+        {{hash=169eb3d8e54f3e01c76493b1adc6896b}{%
+           family={Schmitt},
+           familyi={S\bibinitperiod}}}%
+        {{hash=02129bb861061d1a052c592e2dc6b383}{%
+           family={X.},
+           familyi={X\bibinitperiod}}}%
+        {{hash=1835bc089bdf4bdc7eecff1b88c50a6b}{%
+           family={Kubler},
+           familyi={K\bibinitperiod}}}%
+        {{hash=5dbc98dcc983a70728bd082d1a47546e}{%
+           family={S.},
+           familyi={S\bibinitperiod}}}%
+        {{hash=4ffe35db90d94c6041fb8ddf7b44df29}{%
+           family={Robert},
+           familyi={R\bibinitperiod}}}%
+        {{hash=ff44570aca8241914870afbc310cdb85}{%
+           family={J.},
+           familyi={J\bibinitperiod}}}%
+        {{hash=226691c98a3df0a79cd6580891e65813}{%
+           family={Papadakis},
+           familyi={P\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=4edde709bed4344ea9019cdc9d0692cf}{%
+           family={LeTraon},
+           familyi={L\bibinitperiod},
+           given={Y},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \strng{namehash}{32e514d0e1e900a1956577d2424cd72d}
+      \strng{fullhash}{42809d1b1ba176d3901ea7ff7ab8b924}
+      \strng{bibnamehash}{32e514d0e1e900a1956577d2424cd72d}
+      \strng{authorbibnamehash}{32e514d0e1e900a1956577d2424cd72d}
+      \strng{authornamehash}{32e514d0e1e900a1956577d2424cd72d}
+      \strng{authorfullhash}{42809d1b1ba176d3901ea7ff7ab8b924}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{A replicable comparison study of NER software: StanfordNLP, NLTK, OpenNLP, SpaCy, Gate}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://goo.su/gCuuA
+      \endverb
+      \verb{url}
+      \verb https://goo.su/gCuuA
+      \endverb
+    \endentry
+    \entry{solr}{online}{}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labeltitlesource}{title}
+      \field{title}{Solr}
+      \field{urlday}{27}
+      \field{urlmonth}{3}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/apache/solr
+      \endverb
+      \verb{url}
+      \verb https://github.com/apache/solr
+      \endverb
+      \keyw{Solr,search}
+    \endentry
+    \entry{spacy_troubles}{online}{}
+      \field{sortinit}{s}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{labeltitlesource}{title}
+      \field{title}{spaCy}
+      \field{urlday}{27}
+      \field{urlmonth}{3}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://spacy.io/usage/spacy-101
+      \endverb
+      \verb{url}
+      \verb https://spacy.io/usage/spacy-101
+      \endverb
+      \keyw{Spacy,NLP}
+    \endentry
+    \entry{ctan1}{article}{}
+      \name{author}{3}{}{%
+        {{hash=504a90ed51b91d6194894977cf76f300}{%
+           family={Владимирович},
+           familyi={В\bibinitperiod},
+           given={Михайлов\bibnamedelima Дмитрий},
+           giveni={М\bibinitperiod\bibinitdelim Д\bibinitperiod}}}%
+        {{hash=df98df30fc451de67c2e574b6b5b53a0}{%
+           family={Павлович},
+           familyi={П\bibinitperiod},
+           given={Козлов\bibnamedelima Александр},
+           giveni={К\bibinitperiod\bibinitdelim А\bibinitperiod}}}%
+        {{hash=95da470f5d26a8776257b29323c8a5c2}{%
+           family={Мартинович},
+           familyi={М\bibinitperiod},
+           given={Емельянов\bibnamedelima Геннадий},
+           giveni={Е\bibinitperiod\bibinitdelim Г\bibinitperiod}}}%
+      }
+      \strng{namehash}{7367a498681c1632a281ed2f9ad69ca0}
+      \strng{fullhash}{7367a498681c1632a281ed2f9ad69ca0}
+      \strng{bibnamehash}{7367a498681c1632a281ed2f9ad69ca0}
+      \strng{authorbibnamehash}{7367a498681c1632a281ed2f9ad69ca0}
+      \strng{authornamehash}{7367a498681c1632a281ed2f9ad69ca0}
+      \strng{authorfullhash}{7367a498681c1632a281ed2f9ad69ca0}
+      \field{sortinit}{В}
+      \field{sortinithash}{769561dacf0468c568f33adb4926797c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Выделение знаний и языковых форм их выражения на множестве тематических текстов: подход на основе меры tf-idf}
+      \field{year}{2015}
+      \verb{urlraw}
+      \verb https://clck.ru/3K8Tnt
+      \endverb
+      \verb{url}
+      \verb https://clck.ru/3K8Tnt
+      \endverb
+    \endentry
+    \entry{ctan}{article}{}
+      \name{author}{2}{}{%
+        {{hash=6d5c955e588e00123d6c716ba0b92ea5}{%
+           family={Владимировна},
+           familyi={В\bibinitperiod},
+           given={Попова\bibnamedelima Светлана},
+           giveni={П\bibinitperiod\bibinitdelim С\bibinitperiod}}}%
+        {{hash=9f128bd86383304550a909fcd76f8142}{%
+           family={Владимировна},
+           familyi={В\bibinitperiod},
+           given={Данилова\bibnamedelima Вера},
+           giveni={Д\bibinitperiod\bibinitdelim В\bibinitperiod}}}%
+      }
+      \strng{namehash}{e45c735dc447e8ab4a37823ad373ef60}
+      \strng{fullhash}{e45c735dc447e8ab4a37823ad373ef60}
+      \strng{bibnamehash}{e45c735dc447e8ab4a37823ad373ef60}
+      \strng{authorbibnamehash}{e45c735dc447e8ab4a37823ad373ef60}
+      \strng{authornamehash}{e45c735dc447e8ab4a37823ad373ef60}
+      \strng{authorfullhash}{e45c735dc447e8ab4a37823ad373ef60}
+      \field{sortinit}{В}
+      \field{sortinithash}{769561dacf0468c568f33adb4926797c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Представление документов в задаче кластеризации аннотаций научных текстов}
+      \field{year}{2014}
+      \verb{urlraw}
+      \verb https://clck.ru/3K8QEA
+      \endverb
+      \verb{url}
+      \verb https://clck.ru/3K8QEA
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
