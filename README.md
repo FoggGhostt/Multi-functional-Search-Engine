@@ -1,19 +1,18 @@
 # Multi-functional Search Engine
 
-Multi-functional Search Engine is a lightweight, high-performance search engine written in Go (Golang) with a Vue.js frontend. It supports indexing and searching across multiple text document formats by implementing text preprocessing (tokenization, normalization, stop-word removal, stemming), building an inverted index stored in MongoDB, and ranking results using TF-IDF and cosine similarity. The backend leverages Go’s goroutines for concurrent processing, and the application can be deployed via Docker and Nginx.
+Multi-functional Search Engine — легковесный и высокопроизводительный поисковой движок, написанный на Go с фронтендом на Vue.js. Он поддерживает индексирование и поиск по различным форматам текстовых документов благодаря реализации предварительной обработки текста (токенизация, нормализация, удаление стоп-слов, стемминг), построению инвертированного индекса, сохранённого в MongoDB, и ранжированию результатов с помощью TF-IDF и cosine similarity. Бэкенд использует goroutines языка Go для параллельной обработки, а приложение можно развернуть через Docker и Nginx.
 
-## Features
+## Основной функционал
 
-* **Text Preprocessing**: Tokenization, case normalization, removal of Russian and English stop words, and Porter stemming for both languages.
-* **Inverted Index**: Builds and stores an inverted index mapping tokens to document IDs for fast lookup.
-* **Ranking**: Calculates TF-IDF weights and ranks documents by cosine similarity.
-* **Concurrency**: Uses goroutines for parallel file parsing, indexing, and query processing to maximize performance.
-* **Frontend UI**: Vue.js-based interface for uploading documents, executing search queries, and displaying ranked results.
-* **Persistence**: MongoDB stores both forward (document → token counts) and inverted (token → document list) indices.
-* **Testing**: Unit tests for core packages (Parser, Indexer, Search).
-* **Deployment**: Dockerized with Docker Compose and served via Nginx.
+* **Text Preprocessing**: токенизация, нормализация, удаление стоп-слов и стемминг для обоих языков.
+* **Inverted Index**: построение и хранение инвертированного индекса, связывающего токены с идентификаторами документов для быстрого поиска.
+* **Ranking**: вычисление TF-IDF весов и ранжирование документов по cosine similarity.
+* **Concurrency**: использование goroutines для параллельного парсинга файлов, индексирования и обработки запросов.
+* **Frontend UI**: интерфейс на Vue.js для загрузки документов, выполнения поисковых запросов и отображения результатов.
+* **Testing**: unit tests для основных пакетов (Parser, Indexer, Search).
+* **Deployment**: контейнеризация с помощью Docker и Docker Compose, деплой через Nginx.
 
-## Tech Stack
+## Технологический стек
 
 * **Backend**: Go (Golang)
 * **Frontend**: Vue.js
@@ -21,60 +20,57 @@ Multi-functional Search Engine is a lightweight, high-performance search engine 
 * **Containerization**: Docker, Docker Compose
 * **Web Server**: Nginx
 
-## Getting Started
+## Начало работы
 
-### Prerequisites
+### Требования
 
-* Go 1.18+ installed
-* Node.js and npm
-* MongoDB instance
-* Docker & Docker Compose (optional, for containerized deployment)
+* Установленный Go 1.18+
+* Node.js и npm
+* Запущенный экземпляр MongoDB
+* Docker и Docker Compose (опционально, для контейнеризированного развёртывания)
 
-### Installation
+### Установка
 
-1. **Clone the repository**:
+1. **Клонирование репозитория**:
 
    ```bash
    git clone https://github.com/FoggGhostt/Multi-functional-Search-Engine.git
    cd Multi-functional-Search-Engine
    ```
+2. **Настройка**:
 
-2. **Configure**:
-
-   * Edit `config.yaml` to set your MongoDB URI and database name.
-
-3. **Build Backend**:
+   * Отредактируйте `config.yaml`, указав ваш MongoDB URI и имя базы данных.
+3. **Сборка бэкенда**:
 
    ```bash
    go build -o search-engine main.go
    ```
-
-4. **Install Frontend Dependencies**:
+4. **Установка зависимостей фронтенда**:
 
    ```bash
    cd frontend
    npm install
    ```
 
-## Usage
+## Использование
 
-1. **Start MongoDB** (if not already running).
-2. **Run Backend**:
+1. **Запустите MongoDB** (если ещё не запущен).
+2. **Запуск бэкенда**:
 
    ```bash
    ./search-engine
    ```
-3. **Run Frontend**:
+3. **Запуск фронтенда**:
 
    ```bash
    cd frontend
    npm run serve
    ```
-4. **Open** [http://localhost:8080](http://localhost:8080) in your browser to access the UI.
+4. **Откройте** [http://localhost:8080](http://localhost:8080) в браузере для доступа к UI.
 
-## Running Tests
+## Запуск тестов
 
-To run unit tests for core packages:
+Для запуска unit tests основных пакетов выполните:
 
 ```bash
 cd pkg/parser && go test
@@ -82,16 +78,16 @@ cd pkg/indexer && go test
 cd pkg/search && go test
 ```
 
-## Docker Deployment
+## Развёртывание в Docker
 
-1. **Build and run containers**:
+1. **Сборка и запуск контейнеров**:
 
    ```bash
    docker-compose up --build
    ```
-2. The frontend will be served by Nginx, which also proxies API requests to the Go backend.
+2. Фронтенд будет обслуживаться через Nginx, который также проксирует API-запросы к Go-бэкенду.
 
-## Project Structure
+## Структура проекта
 
 ```plaintext
 .
@@ -113,18 +109,3 @@ cd pkg/search && go test
         ├── components           # UI components (SearchBar, FileUpload, Results)
         └── App.vue, main.js     # App entrypoint
 ```
-
-## Contributing
-
-Contributions and pull requests are welcome! Feel free to open issues for bugs or feature requests.
-
-## References
-
-* Porter stemming algorithm for Russian and English
-* TF-IDF ranking and cosine similarity
-* Go concurrency patterns (goroutines, sync.Map)
-* Vue.js documentation
-
----
-
-*Report and implementation details adapted from project documentation.*
